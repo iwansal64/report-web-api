@@ -207,3 +207,18 @@ export async function updateReport(report_id: string, new_report_data: Report): 
 
     return true;
 }
+
+export async function checkAccountType(user_email: string): Promise<AccountType|undefined> {
+    // Get the user data
+    const user_data = await prisma.user.findUnique({
+        where: {
+            email: user_email
+        }
+    });
+
+    if(!user_data) {
+        return undefined;
+    }
+    
+    return user_data.role;
+}

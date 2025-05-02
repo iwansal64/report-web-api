@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import { addReport, changeReportStatus, deleteReport, getReport, prisma, setupSignup, updateReport, userLogin, userSignup, verifySignup } from "./database";
 import fastifyCookie from "@fastify/cookie";
 import fastifyRateLimit from "@fastify/rate-limit";
-import { APIErrorType, generate_user_token, verify_user_token } from "./utilities";
+import { APIErrorType, generate_user_token, verify_teacher, verify_user_token } from "./utilities";
 import { AccountType, Report, ReportStatus, ReportType } from "./generated/prisma";
 
 dotenv.configDotenv();
@@ -123,7 +123,7 @@ fastify.post('/api/report/add', async (req: FastifyRequest<{ Body: { message: st
 
 fastify.get('/api/report/get', async (req: FastifyRequest, res: FastifyReply) => {
     // Verify the user token
-    if(!req.cookies.user_token || !verify_user_token(req.cookies.user_token)) {
+    if(!req.cookies.user_token || !(await verify_teacher(req.cookies.user_token))) {
         return res.code(401).send();
     }
 
@@ -142,7 +142,7 @@ fastify.put('/api/report/change_status', async (req: FastifyRequest<{ Body: { re
     const { report_id, report_status } = req.body;
     
     // Verify the user token
-    if(!req.cookies.user_token || !verify_user_token(req.cookies.user_token)) {
+    if(!req.cookies.user_token || !(await verify_teacher(req.cookies.user_token))) {
         return res.code(401).send();
     }
 
@@ -162,7 +162,7 @@ fastify.delete('/api/report/delete', async (req: FastifyRequest<{ Body: { report
     const { report_id } = req.body;
 
     // Verify the user token
-    if(!req.cookies.user_token || !verify_user_token(req.cookies.user_token)) {
+    if(!req.cookies.user_token || !(await verify_teacher(req.cookies.user_token))) {
         return res.code(401).send();
     }
 

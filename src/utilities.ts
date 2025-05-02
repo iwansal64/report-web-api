@@ -1,4 +1,6 @@
 import jwt from "jsonwebtoken";
+import { AccountType } from "./generated/prisma";
+import { checkAccountType } from "./database";
 
 const alphabets: string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -7,7 +9,7 @@ function get_random_string_array(arr: (string|string[])): string {
 }
 
 export function generate_user_token(email: string): string {
-    return jwt.sign({ email }, process.env.JWT_SECRET!)
+    return jwt.sign({ email: email }, process.env.JWT_SECRET!)
 }
 
 export function generate_signup_token(): string {
@@ -20,13 +22,24 @@ export function generate_signup_token(): string {
     return return_value;
 }
 
-export function verify_user_token(token: string): jwt.JwtPayload | string | undefined {
+export async function verify_user_token(token: string): Promise<AccountType | undefined> {
     try {
-        return jwt.verify(token, process.env.JWT_SECRET!);
+        const payload = jwt.verify(token, process.env.JWT_SECRET!);
+        if(typeof payload == "string" || !payload.email) {
+            return undefined;
+        }
+        
+        const account_type = await checkAccountType(payload.email);
+        
+        return account_type;
     }
     catch(error) {
         return undefined;
     }
+}
+
+export async function verify_teacher(token: string): Promise<boolean> {
+    return (await verify_user_token(token)) == AccountType.Guru;
 }
 
 export enum APIErrorType {
