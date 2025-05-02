@@ -139,6 +139,7 @@ exports.Prisma.ReportScalarFieldEnum = {
   message: 'message',
   type: 'type',
   follow_up: 'follow_up',
+  status: 'status',
   pic_name: 'pic_name'
 };
 
@@ -175,6 +176,12 @@ exports.ReportType = exports.$Enums.ReportType = {
   VR: 'VR',
   Safety: 'Safety',
   SOP: 'SOP'
+};
+
+exports.ReportStatus = exports.$Enums.ReportStatus = {
+  Pending: 'Pending',
+  OnProgress: 'OnProgress',
+  Completed: 'Completed'
 };
 
 exports.Prisma.ModelName = {

@@ -21,6 +21,12 @@ enum ReportType {
   SOP
 }
 
+enum ReportStatus {
+  Pending
+  OnProgress
+  Completed
+}
+
 // Database model
 model User {
   id       String      @id @default(uuid())
@@ -39,10 +45,11 @@ model Registration {
 }
 
 model Report {
-  id        String      @id @default(uuid())
+  id        String       @id @default(uuid())
   message   String
   type      ReportType
   follow_up AccountType
+  status    ReportStatus @default(Pending)
 
   // Relation
   pic      User   @relation(references: [username], fields: [pic_name])

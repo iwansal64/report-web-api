@@ -1,11 +1,11 @@
 //? CONFIG
 import Fastify, { FastifyReply, FastifyRequest } from "fastify";
 import dotenv from "dotenv";
-import { addReport, getReport, prisma, setupSignup, userLogin, userSignup, verifySignup } from "./database";
+import { addReport, changeReportStatus, getReport, prisma, setupSignup, userLogin, userSignup, verifySignup } from "./database";
 import fastifyCookie from "@fastify/cookie";
 import fastifyRateLimit from "@fastify/rate-limit";
 import { APIErrorType, generate_user_token, verify_user_token } from "./utilities";
-import { AccountType, ReportType } from "./generated/prisma";
+import { AccountType, ReportStatus, ReportType } from "./generated/prisma";
 
 dotenv.configDotenv();
 const fastify = Fastify();
@@ -132,6 +132,26 @@ fastify.get('/api/report/get', async (req: FastifyRequest, res: FastifyReply) =>
 
     if(result) {
         return res.code(200).send(result);
+    }
+
+    return res.code(500).send();
+});
+
+fastify.put('/api/report/change_status', async (req: FastifyRequest<{ Body: { report_id: string, report_status: ReportStatus } }>, res: FastifyReply) => {
+    // Get the data
+    const { report_id, report_status } = req.body;
+    
+    // Verify the user token
+    if(!req.cookies.user_token || !verify_user_token(req.cookies.user_token)) {
+        return res.code(401).send();
+    }
+
+    // Change the status
+    const result = await changeReportStatus(report_id, report_status);
+
+    // Check if there's error
+    if(result) {
+        return res.code(200).send();
     }
 
     return res.code(500).send();

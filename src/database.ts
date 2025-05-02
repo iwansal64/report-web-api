@@ -1,4 +1,4 @@
-import { AccountType, PrismaClient, Registration, Report, ReportType, User } from "./generated/prisma";
+import { AccountType, PrismaClient, Registration, Report, ReportStatus, ReportType, User } from "./generated/prisma";
 import { APIErrorType, generate_signup_token } from "./utilities";
 import nodemailer from "nodemailer";
 
@@ -131,7 +131,7 @@ export async function addReport(message: string, pic_name: string, report_type: 
                     connect: {
                         username: pic_name
                     }
-                }
+                },
             }
         });
     }
@@ -154,4 +154,22 @@ export async function getReport(): Promise<Report[] | null> {
     }
 
     return report_data;
+}
+
+export async function changeReportStatus(report_id: string, report_status: ReportStatus): Promise<boolean> {
+    try {
+        const result = await prisma.report.update({
+            where: {
+                id: report_id
+            },
+            data: {
+                status: report_status
+            }
+        });
+    }
+    catch(err) {
+        return false;
+    }
+    
+    return true;
 }
