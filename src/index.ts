@@ -1,11 +1,11 @@
 //? CONFIG
 import Fastify, { FastifyReply, FastifyRequest } from "fastify";
 import dotenv from "dotenv";
-import { addReport, changeReportStatus, deleteReport, getReport, prisma, setupSignup, userLogin, userSignup, verifySignup } from "./database";
+import { addReport, changeReportStatus, deleteReport, getReport, prisma, setupSignup, updateReport, userLogin, userSignup, verifySignup } from "./database";
 import fastifyCookie from "@fastify/cookie";
 import fastifyRateLimit from "@fastify/rate-limit";
 import { APIErrorType, generate_user_token, verify_user_token } from "./utilities";
-import { AccountType, ReportStatus, ReportType } from "./generated/prisma";
+import { AccountType, Report, ReportStatus, ReportType } from "./generated/prisma";
 
 dotenv.configDotenv();
 const fastify = Fastify();
@@ -174,6 +174,25 @@ fastify.delete('/api/report/delete', async (req: FastifyRequest<{ Body: { report
     }
 
     return res.code(500).send();
+});
+
+fastify.put('/api/report/update', async (req: FastifyRequest<{ Body: { report_id: string, new_report_data: Report } }>, res: FastifyReply) => {
+    // Get the data
+    const { report_id, new_report_data } = req.body;
+
+    // Verify the admin token
+    if(!req.cookies.admin_token || req.cookies.admin_token != process.env.ADMIN_TOKEN!) {
+        return res.code(401).send();
+    }
+
+    // Chang the report data
+    const result = await updateReport(report_id, new_report_data);
+
+    if(result) {
+        return res.code(200).send();
+    }
+
+    return res.code(500).send()
 });
 
 

@@ -168,6 +168,7 @@ export async function changeReportStatus(report_id: string, report_status: Repor
         });
     }
     catch(err) {
+        console.error(`There's an error when trying to change report status. Error: ${err}`);
         return false;
     }
     
@@ -183,6 +184,24 @@ export async function deleteReport(report_id: string): Promise<boolean> {
         });
     }
     catch(err) {
+        console.error(`There's an error when trying to delete report data. Error: ${err}`);
+        return false;
+    }
+
+    return true;
+}
+
+export async function updateReport(report_id: string, new_report_data: Report): Promise<boolean> {
+    try {
+        await prisma.report.update({
+            where: {
+                id: report_id
+            },
+            data: new_report_data
+        });
+    }
+    catch(err) {
+        console.error(`There's an error when trying to update report data. Error: ${err}`);
         return false;
     }
 
