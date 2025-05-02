@@ -141,3 +141,17 @@ export async function addReport(message: string, pic_name: string, report_type: 
     
     return true;
 }
+
+export async function getReport(): Promise<Report[] | null> {
+    // Get the report data
+    let report_data: Report[];
+    try {
+        report_data = await prisma.report.findMany();
+    }
+    catch(err) {
+        console.error(`There's an error when trying to get report data. Error: ${err}`);
+        return null;
+    }
+
+    return report_data;
+}

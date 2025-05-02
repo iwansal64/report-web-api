@@ -1,7 +1,7 @@
 //? CONFIG
 import Fastify, { FastifyReply, FastifyRequest } from "fastify";
 import dotenv from "dotenv";
-import { addReport, prisma, setupSignup, userLogin, userSignup, verifySignup } from "./database";
+import { addReport, getReport, prisma, setupSignup, userLogin, userSignup, verifySignup } from "./database";
 import fastifyCookie from "@fastify/cookie";
 import fastifyRateLimit from "@fastify/rate-limit";
 import { APIErrorType, generate_user_token, verify_user_token } from "./utilities";
@@ -118,6 +118,22 @@ fastify.post('/api/report/add', async (req: FastifyRequest<{ Body: { message: st
         return res.code(200).send();
     }
     
+    return res.code(500).send();
+});
+
+fastify.get('/api/report/get', async (req: FastifyRequest, res: FastifyReply) => {
+    // Verify the user token
+    if(!req.cookies.user_token || !verify_user_token(req.cookies.user_token)) {
+        return res.code(401).send();
+    }
+
+    // Get the report data
+    const result = await getReport();
+
+    if(result) {
+        return res.code(200).send(result);
+    }
+
     return res.code(500).send();
 });
 
