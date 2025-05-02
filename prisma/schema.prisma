@@ -1,0 +1,35 @@
+generator client {
+    provider = "prisma-client-js"
+    output   = "../src/generated/prisma"
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+enum AccountType {
+    Guru
+    Siswa
+    Vendor
+}
+
+enum ReportType {
+    VR
+    Safety
+    SOP
+}
+
+model User {
+    id       String      @id @default(uuid())
+    email    String      @unique
+    username String      @unique
+    password String
+    role     AccountType
+}
+
+model Registration {
+    id String @id @default(uuid())
+    email String @unique
+    token String @unique
+}
