@@ -134,6 +134,14 @@ exports.Prisma.RegistrationScalarFieldEnum = {
   token: 'token'
 };
 
+exports.Prisma.ReportScalarFieldEnum = {
+  id: 'id',
+  message: 'message',
+  type: 'type',
+  follow_up: 'follow_up',
+  pic_name: 'pic_name'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -151,15 +159,28 @@ exports.Prisma.RegistrationOrderByRelevanceFieldEnum = {
   email: 'email',
   token: 'token'
 };
+
+exports.Prisma.ReportOrderByRelevanceFieldEnum = {
+  id: 'id',
+  message: 'message',
+  pic_name: 'pic_name'
+};
 exports.AccountType = exports.$Enums.AccountType = {
   Guru: 'Guru',
   Siswa: 'Siswa',
   Vendor: 'Vendor'
 };
 
+exports.ReportType = exports.$Enums.ReportType = {
+  VR: 'VR',
+  Safety: 'Safety',
+  SOP: 'SOP'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
-  Registration: 'Registration'
+  Registration: 'Registration',
+  Report: 'Report'
 };
 
 /**

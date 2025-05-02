@@ -20,6 +20,15 @@ export function generate_signup_token(): string {
     return return_value;
 }
 
+export function verify_user_token(token: string): jwt.JwtPayload | string | undefined {
+    try {
+        return jwt.verify(token, process.env.JWT_SECRET!);
+    }
+    catch(error) {
+        return undefined;
+    }
+}
+
 export enum APIErrorType {
     unauthorized_error,
     internal_server_error,

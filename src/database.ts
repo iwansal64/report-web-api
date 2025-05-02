@@ -1,4 +1,4 @@
-import { PrismaClient, Registration, User } from "./generated/prisma";
+import { AccountType, PrismaClient, Registration, Report, ReportType, User } from "./generated/prisma";
 import { APIErrorType, generate_signup_token } from "./utilities";
 import nodemailer from "nodemailer";
 
@@ -117,4 +117,27 @@ export async function setupSignup(username: string, password: string, token: str
     
     // If its all safe, return no error
     return APIErrorType.no_error;
+}
+
+export async function addReport(message: string, pic_name: string, report_type: ReportType,  follow_up: AccountType): Promise<boolean> {
+    // Create report data
+    try {
+        await prisma.report.create({
+            data: {
+                message: message,
+                follow_up: follow_up,
+                type: report_type,
+                pic: {
+                    connect: {
+                        username: pic_name
+                    }
+                }
+            }
+        });
+    }
+    catch(err) {
+        return false;
+    }
+    
+    return true;
 }

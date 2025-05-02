@@ -1,9 +1,10 @@
 //? CONFIG
 import Fastify, { FastifyReply, FastifyRequest } from "fastify";
 import dotenv from "dotenv";
-import { prisma, setupSignup, userLogin, userSignup, verifySignup } from "./database";
+import { addReport, prisma, setupSignup, userLogin, userSignup, verifySignup } from "./database";
 import fastifyCookie from "@fastify/cookie";
-import { APIErrorType, generate_user_token } from "./utilities";
+import { APIErrorType, generate_user_token, verify_user_token } from "./utilities";
+import { AccountType, ReportType } from "./generated/prisma";
 
 dotenv.configDotenv();
 const fastify = Fastify();
@@ -41,7 +42,10 @@ fastify.post('/api/user/login', async (req: FastifyRequest<{ Body: { username: s
     // If it's verified,
     if(result) {
         // Set cookie for user token and send 200 OK status
-        res.setCookie("user_token", generate_user_token(result.email), )
+        res.setCookie("user_token", generate_user_token(result.email), {
+            path: "/",
+            expires: (new Date(Date.now() + 1000 * 60 * 60 * 24))
+        });
         return res.code(200).send();
     }
 
@@ -91,6 +95,25 @@ fastify.post('/api/user/setup_signup', async (req: FastifyRequest<{ Body: { user
         case APIErrorType.internal_server_error: return res.code(500).send();
         case APIErrorType.unauthorized_error: return res.code(401).send();
     };
+});
+
+fastify.post('/api/report/add', async (req: FastifyRequest<{ Body: { message: string, pic_name: string, report_type: ReportType, follow_up: AccountType } }>, res: FastifyReply) => {
+    // Get the data
+    const { message, pic_name, report_type, follow_up } = req.body;
+
+    // Verify the user token
+    if(!req.cookies.user_token || !verify_user_token(req.cookies.user_token)) {
+        return res.code(401).send();
+    }
+
+    // Add the report
+    const result = await addReport(message, pic_name, report_type, follow_up);
+
+    if(result) {
+        return res.code(200).send();
+    }
+    
+    return res.code(500).send();
 });
 
 
