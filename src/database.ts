@@ -64,20 +64,57 @@ export async function userSignup(email: string): Promise<boolean> {
 
 export async function verifySignup(token: string): Promise<APIErrorType> {
     try {
+        // Get the registration data
         const registration_data = await prisma.registration.findUnique({
             where: {
                 token: token
             }
         });
     
+        // If the registration data found!
         if(registration_data) {
             return APIErrorType.no_error;
         }
+        // If the registration data not found :(
         else {
             return APIErrorType.unauthorized_error;
         }
     }
     catch(err) {
+        // If there's an error.
         return APIErrorType.internal_server_error;
     }
+}
+
+export async function setupSignup(username: string, password: string, token: string): Promise<APIErrorType> {
+    let registration_data: Registration | null;
+    try {
+        // Get the registration data
+        registration_data = await prisma.registration.findUnique({
+            where: {
+                token: token
+            }
+        });
+    
+        // If the registration data found!
+        if(!registration_data) {
+            return APIErrorType.unauthorized_error;
+        }
+    }
+    catch(err) {
+        // If there's an error.
+        return APIErrorType.internal_server_error;
+    }
+
+    const result = await prisma.user.create({
+        data: {
+            email: registration_data.email,
+            username: username,
+            password: password,
+            role: "Siswa"
+        }
+    });
+    
+    // If its all safe, return no error
+    return APIErrorType.no_error;
 }

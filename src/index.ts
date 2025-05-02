@@ -1,7 +1,7 @@
 //? CONFIG
 import Fastify, { FastifyReply, FastifyRequest } from "fastify";
 import dotenv from "dotenv";
-import { prisma, userLogin, userSignup, verifySignup } from "./database";
+import { prisma, setupSignup, userLogin, userSignup, verifySignup } from "./database";
 import fastifyCookie from "@fastify/cookie";
 import { APIErrorType, generate_user_token } from "./utilities";
 
@@ -69,6 +69,21 @@ fastify.post('/api/user/verify_signup', async (req: FastifyRequest<{ Body: { tok
 
     // Verify token
     const result = await verifySignup(token);
+
+    // Check and match the result
+    switch(result) {
+        case APIErrorType.no_error: return res.code(200).send();
+        case APIErrorType.internal_server_error: return res.code(500).send();
+        case APIErrorType.unauthorized_error: return res.code(401).send();
+    };
+});
+
+fastify.post('/api/user/setup_signup', async (req: FastifyRequest<{ Body: { username: string, password: string, token: string } }>, res: FastifyReply) => {
+    // Get the username, password and token
+    const { password, username, token } = req.body;
+
+    // Setup Account
+    const result = await setupSignup(username, password, token);
 
     // Check and match the result
     switch(result) {
