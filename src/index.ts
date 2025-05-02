@@ -3,6 +3,7 @@ import Fastify, { FastifyReply, FastifyRequest } from "fastify";
 import dotenv from "dotenv";
 import { addReport, prisma, setupSignup, userLogin, userSignup, verifySignup } from "./database";
 import fastifyCookie from "@fastify/cookie";
+import fastifyRateLimit from "@fastify/rate-limit";
 import { APIErrorType, generate_user_token, verify_user_token } from "./utilities";
 import { AccountType, ReportType } from "./generated/prisma";
 
@@ -13,7 +14,11 @@ const fastify = Fastify();
 
 //? PLUGIN
 fastify.register(fastifyCookie);
-
+fastify.register(fastifyRateLimit, {
+    max: 50,
+    timeWindow: "1 minute",
+    allowList: ["127.0.0.1"]
+});
 
 
 //? MIDDLEWARE
