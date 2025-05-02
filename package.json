@@ -1,0 +1,22 @@
+{
+  "name": "report-web-api",
+  "version": "0.0.1",
+  "description": "An API for Website Reporting MIVHS. made by TEAM IT",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx tsx test.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "report-web-api"
+  },
+  "keywords": [
+    "api",
+    "backend",
+    "server",
+    "typescript",
+    "fastapi"
+  ],
+  "author": "Iwansal64",
+  "license": "ISC"
+}
