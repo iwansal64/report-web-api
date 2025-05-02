@@ -1,7 +1,7 @@
 //? CONFIG
 import Fastify, { FastifyReply, FastifyRequest } from "fastify";
 import dotenv from "dotenv";
-import { addReport, changeReportStatus, getReport, prisma, setupSignup, userLogin, userSignup, verifySignup } from "./database";
+import { addReport, changeReportStatus, deleteReport, getReport, prisma, setupSignup, userLogin, userSignup, verifySignup } from "./database";
 import fastifyCookie from "@fastify/cookie";
 import fastifyRateLimit from "@fastify/rate-limit";
 import { APIErrorType, generate_user_token, verify_user_token } from "./utilities";
@@ -150,6 +150,25 @@ fastify.put('/api/report/change_status', async (req: FastifyRequest<{ Body: { re
     const result = await changeReportStatus(report_id, report_status);
 
     // Check if there's error
+    if(result) {
+        return res.code(200).send();
+    }
+
+    return res.code(500).send();
+});
+
+fastify.delete('/api/report/delete', async (req: FastifyRequest<{ Body: { report_id: string } }>, res: FastifyReply) => {
+    // Get the data
+    const { report_id } = req.body;
+
+    // Verify the user token
+    if(!req.cookies.user_token || !verify_user_token(req.cookies.user_token)) {
+        return res.code(401).send();
+    }
+
+    // Delete the report
+    const result = await deleteReport(report_id);
+
     if(result) {
         return res.code(200).send();
     }

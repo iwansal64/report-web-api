@@ -173,3 +173,18 @@ export async function changeReportStatus(report_id: string, report_status: Repor
     
     return true;
 }
+
+export async function deleteReport(report_id: string): Promise<boolean> {
+    try {
+        await prisma.report.delete({
+            where: {
+                id: report_id
+            }
+        });
+    }
+    catch(err) {
+        return false;
+    }
+
+    return true;
+}
