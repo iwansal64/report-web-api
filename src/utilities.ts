@@ -19,3 +19,9 @@ export function generate_signup_token(): string {
 
     return return_value;
 }
+
+export enum APIErrorType {
+    unauthorized_error,
+    internal_server_error,
+    no_error
+};

@@ -1,5 +1,5 @@
 import { PrismaClient, Registration, User } from "./generated/prisma";
-import { generate_signup_token } from "./utilities";
+import { APIErrorType, generate_signup_token } from "./utilities";
 import nodemailer from "nodemailer";
 
 export const prisma = new PrismaClient();
@@ -60,4 +60,24 @@ export async function userSignup(email: string): Promise<boolean> {
     });
 
     return true;
+}
+
+export async function verifySignup(token: string): Promise<APIErrorType> {
+    try {
+        const registration_data = await prisma.registration.findUnique({
+            where: {
+                token: token
+            }
+        });
+    
+        if(registration_data) {
+            return APIErrorType.no_error;
+        }
+        else {
+            return APIErrorType.unauthorized_error;
+        }
+    }
+    catch(err) {
+        return APIErrorType.internal_server_error;
+    }
 }

@@ -1,9 +1,9 @@
 //? CONFIG
 import Fastify, { FastifyReply, FastifyRequest } from "fastify";
 import dotenv from "dotenv";
-import { prisma, userLogin, userSignup } from "./database";
+import { prisma, userLogin, userSignup, verifySignup } from "./database";
 import fastifyCookie from "@fastify/cookie";
-import { generate_user_token } from "./utilities";
+import { APIErrorType, generate_user_token } from "./utilities";
 
 dotenv.configDotenv();
 const fastify = Fastify();
@@ -47,7 +47,7 @@ fastify.post('/api/user/login', async (req: FastifyRequest<{ Body: { username: s
 
     // If not, sends 401 Unauthorized status
     return res.code(401).send();
-})
+});
 
 fastify.post('/api/user/signup', async (req: FastifyRequest<{ Body: { email: string } }>, res: FastifyReply) => {
     // Get email
@@ -61,8 +61,22 @@ fastify.post('/api/user/signup', async (req: FastifyRequest<{ Body: { email: str
     }
     
     return res.code(500).send();
-})
+});
 
+fastify.post('/api/user/verify_signup', async (req: FastifyRequest<{ Body: { token: string } }>, res: FastifyReply) => {
+    // Get the token
+    const { token } = req.body;
+
+    // Verify token
+    const result = await verifySignup(token);
+
+    // Check and match the result
+    switch(result) {
+        case APIErrorType.no_error: return res.code(200).send();
+        case APIErrorType.internal_server_error: return res.code(500).send();
+        case APIErrorType.unauthorized_error: return res.code(401).send();
+    };
+});
 
 
 //? RUNNER
