@@ -195,6 +195,18 @@ fastify.put('/api/report/update', async (req: FastifyRequest<{ Body: { report_id
     return res.code(500).send()
 });
 
+fastify.post('/api/user/logout', async (req: FastifyRequest, res: FastifyReply) => {
+    try {
+        res.clearCookie("user_token");
+    }
+    catch(err) {
+        console.error(`There's an error when trying to logout. Error: ${err}`);
+        return res.code(500).send();
+    }
+
+    return res.code(200).send();
+});
+
 
 //? RUNNER
 const start = async () => {
