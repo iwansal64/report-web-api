@@ -25,11 +25,13 @@
     "@prisma/client": "^6.7.0",
     "dotenv": "^16.5.0",
     "fastify": "^5.3.2",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.10.1"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.3",
+    "@types/nodemailer": "^6.4.17",
     "prisma": "^6.7.0"
   }
 }

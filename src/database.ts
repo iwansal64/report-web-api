@@ -1,17 +1,63 @@
-import { PrismaClient, User } from "./generated/prisma";
+import { PrismaClient, Registration, User } from "./generated/prisma";
+import { generate_signup_token } from "./utilities";
+import nodemailer from "nodemailer";
 
 export const prisma = new PrismaClient();
 
+const transporter = nodemailer.createTransport({
+    service: 'gmail', // or use 'smtp' with custom host and port for other services
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+    },
+});
+  
+
+
 export async function userLogin(username: string, password: string): Promise<User|null> {    
+    // Find the user by username that user gives
     const result = await prisma.user.findUnique({
         where: {
             username: username
         }
     });
 
+    // Match the password
     if(result && result.password == password) {
         return result;
     }
 
     return null;
+}
+
+export async function userSignup(email: string): Promise<boolean> {
+    // Create registration token
+    let result: Registration|null;
+    try {
+        result = await prisma.registration.create({
+            data: {
+                email: email,
+                token: generate_signup_token()
+            }
+        });
+    }
+    catch(err) {
+        console.error(`There's an error when trying to create registration. Error: ${err}`);
+        return false;
+    }
+
+    
+    // Send email confirmation to targetted email user
+    transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: "Confirm Account Registration",
+        html: `<p style="letter-spacing: 2px; font-size: 26px">Hello! This is your token for registration: <code style="letter-spacing: 1px; font-weight: bold; font-style: italic;">[${result.token}]</code> . If you found this email mistaken, we're sorry but you can ignore this.</p>`,
+    }, (error) => {
+        if(error) {
+            console.error(`There's an error when trying to send email. Error: ${error}`);
+        }
+    });
+
+    return true;
 }

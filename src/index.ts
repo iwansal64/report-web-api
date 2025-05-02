@@ -1,7 +1,7 @@
 //? CONFIG
 import Fastify, { FastifyReply, FastifyRequest } from "fastify";
 import dotenv from "dotenv";
-import { prisma, userLogin } from "./database";
+import { prisma, userLogin, userSignup } from "./database";
 import fastifyCookie from "@fastify/cookie";
 import { generate_user_token } from "./utilities";
 
@@ -49,6 +49,19 @@ fastify.post('/api/user/login', async (req: FastifyRequest<{ Body: { username: s
     return res.code(401).send();
 })
 
+fastify.post('/api/user/signup', async (req: FastifyRequest<{ Body: { email: string } }>, res: FastifyReply) => {
+    // Get email
+    const { email } = req.body;
+
+    // Register email and sends email
+    const result = await userSignup(email);
+    
+    if(result) {
+        return res.code(200).send();
+    }
+    
+    return res.code(500).send();
+})
 
 
 

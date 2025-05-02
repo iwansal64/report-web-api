@@ -128,6 +128,12 @@ exports.Prisma.UserScalarFieldEnum = {
   role: 'role'
 };
 
+exports.Prisma.RegistrationScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  token: 'token'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -139,6 +145,12 @@ exports.Prisma.UserOrderByRelevanceFieldEnum = {
   username: 'username',
   password: 'password'
 };
+
+exports.Prisma.RegistrationOrderByRelevanceFieldEnum = {
+  id: 'id',
+  email: 'email',
+  token: 'token'
+};
 exports.AccountType = exports.$Enums.AccountType = {
   Guru: 'Guru',
   Siswa: 'Siswa',
@@ -146,7 +158,8 @@ exports.AccountType = exports.$Enums.AccountType = {
 };
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  Registration: 'Registration'
 };
 
 /**
