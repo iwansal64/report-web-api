@@ -45,7 +45,8 @@ export type AccountType = (typeof AccountType)[keyof typeof AccountType]
 export const ReportType: {
   VR: 'VR',
   Safety: 'Safety',
-  SOP: 'SOP'
+  SOP: 'SOP',
+  Quality: 'Quality'
 };
 
 export type ReportType = (typeof ReportType)[keyof typeof ReportType]
@@ -1117,6 +1118,7 @@ export namespace Prisma {
     username: string | null
     password: string | null
     role: $Enums.AccountType | null
+    created_at: Date | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1125,6 +1127,7 @@ export namespace Prisma {
     username: string | null
     password: string | null
     role: $Enums.AccountType | null
+    created_at: Date | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1133,6 +1136,7 @@ export namespace Prisma {
     username: number
     password: number
     role: number
+    created_at: number
     _all: number
   }
 
@@ -1143,6 +1147,7 @@ export namespace Prisma {
     username?: true
     password?: true
     role?: true
+    created_at?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1151,6 +1156,7 @@ export namespace Prisma {
     username?: true
     password?: true
     role?: true
+    created_at?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1159,6 +1165,7 @@ export namespace Prisma {
     username?: true
     password?: true
     role?: true
+    created_at?: true
     _all?: true
   }
 
@@ -1240,6 +1247,7 @@ export namespace Prisma {
     username: string
     password: string
     role: $Enums.AccountType
+    created_at: Date
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -1265,6 +1273,7 @@ export namespace Prisma {
     username?: boolean
     password?: boolean
     role?: boolean
+    created_at?: boolean
     report_pic?: boolean | User$report_picArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -1277,9 +1286,10 @@ export namespace Prisma {
     username?: boolean
     password?: boolean
     role?: boolean
+    created_at?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "username" | "password" | "role", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "username" | "password" | "role" | "created_at", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     report_pic?: boolean | User$report_picArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1296,6 +1306,7 @@ export namespace Prisma {
       username: string
       password: string
       role: $Enums.AccountType
+      created_at: Date
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -1671,6 +1682,7 @@ export namespace Prisma {
     readonly username: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'AccountType'>
+    readonly created_at: FieldRef<"User", 'DateTime'>
   }
     
 
@@ -2070,18 +2082,21 @@ export namespace Prisma {
     id: string | null
     email: string | null
     token: string | null
+    created_at: Date | null
   }
 
   export type RegistrationMaxAggregateOutputType = {
     id: string | null
     email: string | null
     token: string | null
+    created_at: Date | null
   }
 
   export type RegistrationCountAggregateOutputType = {
     id: number
     email: number
     token: number
+    created_at: number
     _all: number
   }
 
@@ -2090,18 +2105,21 @@ export namespace Prisma {
     id?: true
     email?: true
     token?: true
+    created_at?: true
   }
 
   export type RegistrationMaxAggregateInputType = {
     id?: true
     email?: true
     token?: true
+    created_at?: true
   }
 
   export type RegistrationCountAggregateInputType = {
     id?: true
     email?: true
     token?: true
+    created_at?: true
     _all?: true
   }
 
@@ -2181,6 +2199,7 @@ export namespace Prisma {
     id: string
     email: string
     token: string
+    created_at: Date
     _count: RegistrationCountAggregateOutputType | null
     _min: RegistrationMinAggregateOutputType | null
     _max: RegistrationMaxAggregateOutputType | null
@@ -2204,6 +2223,7 @@ export namespace Prisma {
     id?: boolean
     email?: boolean
     token?: boolean
+    created_at?: boolean
   }, ExtArgs["result"]["registration"]>
 
 
@@ -2212,9 +2232,10 @@ export namespace Prisma {
     id?: boolean
     email?: boolean
     token?: boolean
+    created_at?: boolean
   }
 
-  export type RegistrationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "token", ExtArgs["result"]["registration"]>
+  export type RegistrationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "token" | "created_at", ExtArgs["result"]["registration"]>
 
   export type $RegistrationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Registration"
@@ -2223,6 +2244,7 @@ export namespace Prisma {
       id: string
       email: string
       token: string
+      created_at: Date
     }, ExtArgs["result"]["registration"]>
     composites: {}
   }
@@ -2595,6 +2617,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Registration", 'String'>
     readonly email: FieldRef<"Registration", 'String'>
     readonly token: FieldRef<"Registration", 'String'>
+    readonly created_at: FieldRef<"Registration", 'DateTime'>
   }
     
 
@@ -2932,6 +2955,8 @@ export namespace Prisma {
     type: $Enums.ReportType | null
     follow_up: $Enums.AccountType | null
     status: $Enums.ReportStatus | null
+    location: string | null
+    created_at: Date | null
     pic_name: string | null
   }
 
@@ -2941,6 +2966,8 @@ export namespace Prisma {
     type: $Enums.ReportType | null
     follow_up: $Enums.AccountType | null
     status: $Enums.ReportStatus | null
+    location: string | null
+    created_at: Date | null
     pic_name: string | null
   }
 
@@ -2950,6 +2977,8 @@ export namespace Prisma {
     type: number
     follow_up: number
     status: number
+    location: number
+    created_at: number
     pic_name: number
     _all: number
   }
@@ -2961,6 +2990,8 @@ export namespace Prisma {
     type?: true
     follow_up?: true
     status?: true
+    location?: true
+    created_at?: true
     pic_name?: true
   }
 
@@ -2970,6 +3001,8 @@ export namespace Prisma {
     type?: true
     follow_up?: true
     status?: true
+    location?: true
+    created_at?: true
     pic_name?: true
   }
 
@@ -2979,6 +3012,8 @@ export namespace Prisma {
     type?: true
     follow_up?: true
     status?: true
+    location?: true
+    created_at?: true
     pic_name?: true
     _all?: true
   }
@@ -3061,6 +3096,8 @@ export namespace Prisma {
     type: $Enums.ReportType
     follow_up: $Enums.AccountType
     status: $Enums.ReportStatus
+    location: string | null
+    created_at: Date
     pic_name: string
     _count: ReportCountAggregateOutputType | null
     _min: ReportMinAggregateOutputType | null
@@ -3087,6 +3124,8 @@ export namespace Prisma {
     type?: boolean
     follow_up?: boolean
     status?: boolean
+    location?: boolean
+    created_at?: boolean
     pic_name?: boolean
     pic?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["report"]>
@@ -3099,10 +3138,12 @@ export namespace Prisma {
     type?: boolean
     follow_up?: boolean
     status?: boolean
+    location?: boolean
+    created_at?: boolean
     pic_name?: boolean
   }
 
-  export type ReportOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "message" | "type" | "follow_up" | "status" | "pic_name", ExtArgs["result"]["report"]>
+  export type ReportOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "message" | "type" | "follow_up" | "status" | "location" | "created_at" | "pic_name", ExtArgs["result"]["report"]>
   export type ReportInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     pic?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -3118,6 +3159,8 @@ export namespace Prisma {
       type: $Enums.ReportType
       follow_up: $Enums.AccountType
       status: $Enums.ReportStatus
+      location: string | null
+      created_at: Date
       pic_name: string
     }, ExtArgs["result"]["report"]>
     composites: {}
@@ -3494,6 +3537,8 @@ export namespace Prisma {
     readonly type: FieldRef<"Report", 'ReportType'>
     readonly follow_up: FieldRef<"Report", 'AccountType'>
     readonly status: FieldRef<"Report", 'ReportStatus'>
+    readonly location: FieldRef<"Report", 'String'>
+    readonly created_at: FieldRef<"Report", 'DateTime'>
     readonly pic_name: FieldRef<"Report", 'String'>
   }
     
@@ -3875,7 +3920,8 @@ export namespace Prisma {
     email: 'email',
     username: 'username',
     password: 'password',
-    role: 'role'
+    role: 'role',
+    created_at: 'created_at'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -3884,7 +3930,8 @@ export namespace Prisma {
   export const RegistrationScalarFieldEnum: {
     id: 'id',
     email: 'email',
-    token: 'token'
+    token: 'token',
+    created_at: 'created_at'
   };
 
   export type RegistrationScalarFieldEnum = (typeof RegistrationScalarFieldEnum)[keyof typeof RegistrationScalarFieldEnum]
@@ -3896,6 +3943,8 @@ export namespace Prisma {
     type: 'type',
     follow_up: 'follow_up',
     status: 'status',
+    location: 'location',
+    created_at: 'created_at',
     pic_name: 'pic_name'
   };
 
@@ -3929,9 +3978,18 @@ export namespace Prisma {
   export type RegistrationOrderByRelevanceFieldEnum = (typeof RegistrationOrderByRelevanceFieldEnum)[keyof typeof RegistrationOrderByRelevanceFieldEnum]
 
 
+  export const NullsOrder: {
+    first: 'first',
+    last: 'last'
+  };
+
+  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
   export const ReportOrderByRelevanceFieldEnum: {
     id: 'id',
     message: 'message',
+    location: 'location',
     pic_name: 'pic_name'
   };
 
@@ -3954,6 +4012,13 @@ export namespace Prisma {
    * Reference to a field of type 'AccountType'
    */
   export type EnumAccountTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AccountType'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime'
+   */
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
     
 
 
@@ -3990,6 +4055,7 @@ export namespace Prisma {
     username?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
     role?: EnumAccountTypeFilter<"User"> | $Enums.AccountType
+    created_at?: DateTimeFilter<"User"> | Date | string
     report_pic?: ReportListRelationFilter
   }
 
@@ -3999,6 +4065,7 @@ export namespace Prisma {
     username?: SortOrder
     password?: SortOrder
     role?: SortOrder
+    created_at?: SortOrder
     report_pic?: ReportOrderByRelationAggregateInput
     _relevance?: UserOrderByRelevanceInput
   }
@@ -4012,6 +4079,7 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     password?: StringFilter<"User"> | string
     role?: EnumAccountTypeFilter<"User"> | $Enums.AccountType
+    created_at?: DateTimeFilter<"User"> | Date | string
     report_pic?: ReportListRelationFilter
   }, "id" | "email" | "username">
 
@@ -4021,6 +4089,7 @@ export namespace Prisma {
     username?: SortOrder
     password?: SortOrder
     role?: SortOrder
+    created_at?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -4035,6 +4104,7 @@ export namespace Prisma {
     username?: StringWithAggregatesFilter<"User"> | string
     password?: StringWithAggregatesFilter<"User"> | string
     role?: EnumAccountTypeWithAggregatesFilter<"User"> | $Enums.AccountType
+    created_at?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
 
   export type RegistrationWhereInput = {
@@ -4044,12 +4114,14 @@ export namespace Prisma {
     id?: StringFilter<"Registration"> | string
     email?: StringFilter<"Registration"> | string
     token?: StringFilter<"Registration"> | string
+    created_at?: DateTimeFilter<"Registration"> | Date | string
   }
 
   export type RegistrationOrderByWithRelationInput = {
     id?: SortOrder
     email?: SortOrder
     token?: SortOrder
+    created_at?: SortOrder
     _relevance?: RegistrationOrderByRelevanceInput
   }
 
@@ -4060,12 +4132,14 @@ export namespace Prisma {
     AND?: RegistrationWhereInput | RegistrationWhereInput[]
     OR?: RegistrationWhereInput[]
     NOT?: RegistrationWhereInput | RegistrationWhereInput[]
+    created_at?: DateTimeFilter<"Registration"> | Date | string
   }, "id" | "email" | "token">
 
   export type RegistrationOrderByWithAggregationInput = {
     id?: SortOrder
     email?: SortOrder
     token?: SortOrder
+    created_at?: SortOrder
     _count?: RegistrationCountOrderByAggregateInput
     _max?: RegistrationMaxOrderByAggregateInput
     _min?: RegistrationMinOrderByAggregateInput
@@ -4078,6 +4152,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Registration"> | string
     email?: StringWithAggregatesFilter<"Registration"> | string
     token?: StringWithAggregatesFilter<"Registration"> | string
+    created_at?: DateTimeWithAggregatesFilter<"Registration"> | Date | string
   }
 
   export type ReportWhereInput = {
@@ -4089,6 +4164,8 @@ export namespace Prisma {
     type?: EnumReportTypeFilter<"Report"> | $Enums.ReportType
     follow_up?: EnumAccountTypeFilter<"Report"> | $Enums.AccountType
     status?: EnumReportStatusFilter<"Report"> | $Enums.ReportStatus
+    location?: StringNullableFilter<"Report"> | string | null
+    created_at?: DateTimeFilter<"Report"> | Date | string
     pic_name?: StringFilter<"Report"> | string
     pic?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -4099,6 +4176,8 @@ export namespace Prisma {
     type?: SortOrder
     follow_up?: SortOrder
     status?: SortOrder
+    location?: SortOrderInput | SortOrder
+    created_at?: SortOrder
     pic_name?: SortOrder
     pic?: UserOrderByWithRelationInput
     _relevance?: ReportOrderByRelevanceInput
@@ -4113,6 +4192,8 @@ export namespace Prisma {
     type?: EnumReportTypeFilter<"Report"> | $Enums.ReportType
     follow_up?: EnumAccountTypeFilter<"Report"> | $Enums.AccountType
     status?: EnumReportStatusFilter<"Report"> | $Enums.ReportStatus
+    location?: StringNullableFilter<"Report"> | string | null
+    created_at?: DateTimeFilter<"Report"> | Date | string
     pic_name?: StringFilter<"Report"> | string
     pic?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
@@ -4123,6 +4204,8 @@ export namespace Prisma {
     type?: SortOrder
     follow_up?: SortOrder
     status?: SortOrder
+    location?: SortOrderInput | SortOrder
+    created_at?: SortOrder
     pic_name?: SortOrder
     _count?: ReportCountOrderByAggregateInput
     _max?: ReportMaxOrderByAggregateInput
@@ -4138,6 +4221,8 @@ export namespace Prisma {
     type?: EnumReportTypeWithAggregatesFilter<"Report"> | $Enums.ReportType
     follow_up?: EnumAccountTypeWithAggregatesFilter<"Report"> | $Enums.AccountType
     status?: EnumReportStatusWithAggregatesFilter<"Report"> | $Enums.ReportStatus
+    location?: StringNullableWithAggregatesFilter<"Report"> | string | null
+    created_at?: DateTimeWithAggregatesFilter<"Report"> | Date | string
     pic_name?: StringWithAggregatesFilter<"Report"> | string
   }
 
@@ -4147,6 +4232,7 @@ export namespace Prisma {
     username: string
     password: string
     role: $Enums.AccountType
+    created_at?: Date | string
     report_pic?: ReportCreateNestedManyWithoutPicInput
   }
 
@@ -4156,6 +4242,7 @@ export namespace Prisma {
     username: string
     password: string
     role: $Enums.AccountType
+    created_at?: Date | string
     report_pic?: ReportUncheckedCreateNestedManyWithoutPicInput
   }
 
@@ -4165,6 +4252,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     report_pic?: ReportUpdateManyWithoutPicNestedInput
   }
 
@@ -4174,6 +4262,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     report_pic?: ReportUncheckedUpdateManyWithoutPicNestedInput
   }
 
@@ -4183,6 +4272,7 @@ export namespace Prisma {
     username: string
     password: string
     role: $Enums.AccountType
+    created_at?: Date | string
   }
 
   export type UserUpdateManyMutationInput = {
@@ -4191,6 +4281,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -4199,48 +4290,56 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type RegistrationCreateInput = {
     id?: string
     email: string
     token: string
+    created_at?: Date | string
   }
 
   export type RegistrationUncheckedCreateInput = {
     id?: string
     email: string
     token: string
+    created_at?: Date | string
   }
 
   export type RegistrationUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     token?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type RegistrationUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     token?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type RegistrationCreateManyInput = {
     id?: string
     email: string
     token: string
+    created_at?: Date | string
   }
 
   export type RegistrationUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     token?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type RegistrationUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     token?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ReportCreateInput = {
@@ -4249,6 +4348,8 @@ export namespace Prisma {
     type: $Enums.ReportType
     follow_up: $Enums.AccountType
     status?: $Enums.ReportStatus
+    location?: string | null
+    created_at?: Date | string
     pic: UserCreateNestedOneWithoutReport_picInput
   }
 
@@ -4258,6 +4359,8 @@ export namespace Prisma {
     type: $Enums.ReportType
     follow_up: $Enums.AccountType
     status?: $Enums.ReportStatus
+    location?: string | null
+    created_at?: Date | string
     pic_name: string
   }
 
@@ -4267,6 +4370,8 @@ export namespace Prisma {
     type?: EnumReportTypeFieldUpdateOperationsInput | $Enums.ReportType
     follow_up?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
     status?: EnumReportStatusFieldUpdateOperationsInput | $Enums.ReportStatus
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     pic?: UserUpdateOneRequiredWithoutReport_picNestedInput
   }
 
@@ -4276,6 +4381,8 @@ export namespace Prisma {
     type?: EnumReportTypeFieldUpdateOperationsInput | $Enums.ReportType
     follow_up?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
     status?: EnumReportStatusFieldUpdateOperationsInput | $Enums.ReportStatus
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     pic_name?: StringFieldUpdateOperationsInput | string
   }
 
@@ -4285,6 +4392,8 @@ export namespace Prisma {
     type: $Enums.ReportType
     follow_up: $Enums.AccountType
     status?: $Enums.ReportStatus
+    location?: string | null
+    created_at?: Date | string
     pic_name: string
   }
 
@@ -4294,6 +4403,8 @@ export namespace Prisma {
     type?: EnumReportTypeFieldUpdateOperationsInput | $Enums.ReportType
     follow_up?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
     status?: EnumReportStatusFieldUpdateOperationsInput | $Enums.ReportStatus
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ReportUncheckedUpdateManyInput = {
@@ -4302,6 +4413,8 @@ export namespace Prisma {
     type?: EnumReportTypeFieldUpdateOperationsInput | $Enums.ReportType
     follow_up?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
     status?: EnumReportStatusFieldUpdateOperationsInput | $Enums.ReportStatus
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     pic_name?: StringFieldUpdateOperationsInput | string
   }
 
@@ -4327,6 +4440,17 @@ export namespace Prisma {
     not?: NestedEnumAccountTypeFilter<$PrismaModel> | $Enums.AccountType
   }
 
+  export type DateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
   export type ReportListRelationFilter = {
     every?: ReportWhereInput
     some?: ReportWhereInput
@@ -4349,6 +4473,7 @@ export namespace Prisma {
     username?: SortOrder
     password?: SortOrder
     role?: SortOrder
+    created_at?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -4357,6 +4482,7 @@ export namespace Prisma {
     username?: SortOrder
     password?: SortOrder
     role?: SortOrder
+    created_at?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -4365,6 +4491,7 @@ export namespace Prisma {
     username?: SortOrder
     password?: SortOrder
     role?: SortOrder
+    created_at?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -4395,6 +4522,20 @@ export namespace Prisma {
     _max?: NestedEnumAccountTypeFilter<$PrismaModel>
   }
 
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
   export type RegistrationOrderByRelevanceInput = {
     fields: RegistrationOrderByRelevanceFieldEnum | RegistrationOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -4405,18 +4546,21 @@ export namespace Prisma {
     id?: SortOrder
     email?: SortOrder
     token?: SortOrder
+    created_at?: SortOrder
   }
 
   export type RegistrationMaxOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
     token?: SortOrder
+    created_at?: SortOrder
   }
 
   export type RegistrationMinOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
     token?: SortOrder
+    created_at?: SortOrder
   }
 
   export type EnumReportTypeFilter<$PrismaModel = never> = {
@@ -4433,9 +4577,29 @@ export namespace Prisma {
     not?: NestedEnumReportStatusFilter<$PrismaModel> | $Enums.ReportStatus
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
   }
 
   export type ReportOrderByRelevanceInput = {
@@ -4450,6 +4614,8 @@ export namespace Prisma {
     type?: SortOrder
     follow_up?: SortOrder
     status?: SortOrder
+    location?: SortOrder
+    created_at?: SortOrder
     pic_name?: SortOrder
   }
 
@@ -4459,6 +4625,8 @@ export namespace Prisma {
     type?: SortOrder
     follow_up?: SortOrder
     status?: SortOrder
+    location?: SortOrder
+    created_at?: SortOrder
     pic_name?: SortOrder
   }
 
@@ -4468,6 +4636,8 @@ export namespace Prisma {
     type?: SortOrder
     follow_up?: SortOrder
     status?: SortOrder
+    location?: SortOrder
+    created_at?: SortOrder
     pic_name?: SortOrder
   }
 
@@ -4491,6 +4661,24 @@ export namespace Prisma {
     _max?: NestedEnumReportStatusFilter<$PrismaModel>
   }
 
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
   export type ReportCreateNestedManyWithoutPicInput = {
     create?: XOR<ReportCreateWithoutPicInput, ReportUncheckedCreateWithoutPicInput> | ReportCreateWithoutPicInput[] | ReportUncheckedCreateWithoutPicInput[]
     connectOrCreate?: ReportCreateOrConnectWithoutPicInput | ReportCreateOrConnectWithoutPicInput[]
@@ -4511,6 +4699,10 @@ export namespace Prisma {
 
   export type EnumAccountTypeFieldUpdateOperationsInput = {
     set?: $Enums.AccountType
+  }
+
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
   }
 
   export type ReportUpdateManyWithoutPicNestedInput = {
@@ -4555,6 +4747,10 @@ export namespace Prisma {
     set?: $Enums.ReportStatus
   }
 
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
   export type UserUpdateOneRequiredWithoutReport_picNestedInput = {
     create?: XOR<UserCreateWithoutReport_picInput, UserUncheckedCreateWithoutReport_picInput>
     connectOrCreate?: UserCreateOrConnectWithoutReport_picInput
@@ -4583,6 +4779,17 @@ export namespace Prisma {
     in?: $Enums.AccountType[]
     notIn?: $Enums.AccountType[]
     not?: NestedEnumAccountTypeFilter<$PrismaModel> | $Enums.AccountType
+  }
+
+  export type NestedDateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
@@ -4624,6 +4831,20 @@ export namespace Prisma {
     _max?: NestedEnumAccountTypeFilter<$PrismaModel>
   }
 
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
   export type NestedEnumReportTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.ReportType | EnumReportTypeFieldRefInput<$PrismaModel>
     in?: $Enums.ReportType[]
@@ -4636,6 +4857,21 @@ export namespace Prisma {
     in?: $Enums.ReportStatus[]
     notIn?: $Enums.ReportStatus[]
     not?: NestedEnumReportStatusFilter<$PrismaModel> | $Enums.ReportStatus
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedEnumReportTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -4658,12 +4894,43 @@ export namespace Prisma {
     _max?: NestedEnumReportStatusFilter<$PrismaModel>
   }
 
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type ReportCreateWithoutPicInput = {
     id?: string
     message: string
     type: $Enums.ReportType
     follow_up: $Enums.AccountType
     status?: $Enums.ReportStatus
+    location?: string | null
+    created_at?: Date | string
   }
 
   export type ReportUncheckedCreateWithoutPicInput = {
@@ -4672,6 +4939,8 @@ export namespace Prisma {
     type: $Enums.ReportType
     follow_up: $Enums.AccountType
     status?: $Enums.ReportStatus
+    location?: string | null
+    created_at?: Date | string
   }
 
   export type ReportCreateOrConnectWithoutPicInput = {
@@ -4709,6 +4978,8 @@ export namespace Prisma {
     type?: EnumReportTypeFilter<"Report"> | $Enums.ReportType
     follow_up?: EnumAccountTypeFilter<"Report"> | $Enums.AccountType
     status?: EnumReportStatusFilter<"Report"> | $Enums.ReportStatus
+    location?: StringNullableFilter<"Report"> | string | null
+    created_at?: DateTimeFilter<"Report"> | Date | string
     pic_name?: StringFilter<"Report"> | string
   }
 
@@ -4718,6 +4989,7 @@ export namespace Prisma {
     username: string
     password: string
     role: $Enums.AccountType
+    created_at?: Date | string
   }
 
   export type UserUncheckedCreateWithoutReport_picInput = {
@@ -4726,6 +4998,7 @@ export namespace Prisma {
     username: string
     password: string
     role: $Enums.AccountType
+    created_at?: Date | string
   }
 
   export type UserCreateOrConnectWithoutReport_picInput = {
@@ -4750,6 +5023,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserUncheckedUpdateWithoutReport_picInput = {
@@ -4758,6 +5032,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     role?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ReportCreateManyPicInput = {
@@ -4766,6 +5041,8 @@ export namespace Prisma {
     type: $Enums.ReportType
     follow_up: $Enums.AccountType
     status?: $Enums.ReportStatus
+    location?: string | null
+    created_at?: Date | string
   }
 
   export type ReportUpdateWithoutPicInput = {
@@ -4774,6 +5051,8 @@ export namespace Prisma {
     type?: EnumReportTypeFieldUpdateOperationsInput | $Enums.ReportType
     follow_up?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
     status?: EnumReportStatusFieldUpdateOperationsInput | $Enums.ReportStatus
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ReportUncheckedUpdateWithoutPicInput = {
@@ -4782,6 +5061,8 @@ export namespace Prisma {
     type?: EnumReportTypeFieldUpdateOperationsInput | $Enums.ReportType
     follow_up?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
     status?: EnumReportStatusFieldUpdateOperationsInput | $Enums.ReportStatus
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ReportUncheckedUpdateManyWithoutPicInput = {
@@ -4790,6 +5071,8 @@ export namespace Prisma {
     type?: EnumReportTypeFieldUpdateOperationsInput | $Enums.ReportType
     follow_up?: EnumAccountTypeFieldUpdateOperationsInput | $Enums.AccountType
     status?: EnumReportStatusFieldUpdateOperationsInput | $Enums.ReportStatus
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

@@ -19,6 +19,7 @@ enum ReportType {
     VR
     Safety
     SOP
+    Quality
 }
 
 enum ReportStatus {
@@ -34,7 +35,10 @@ model User {
     username String      @unique
     password String
     role     AccountType
+    
+    created_at DateTime @default(now())
 
+    // Relation
     report_pic Report[]
 }
 
@@ -42,6 +46,8 @@ model Registration {
     id    String @id @default(uuid())
     email String @unique
     token String @unique
+    
+    created_at DateTime @default(now())
 }
 
 model Report {
@@ -51,6 +57,8 @@ model Report {
     follow_up AccountType
     status    ReportStatus @default(Pending)
     location  String?
+
+    created_at DateTime @default(now())
 
     // Relation
     pic      User   @relation(references: [username], fields: [pic_name])

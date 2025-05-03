@@ -119,14 +119,17 @@ export async function setupSignup(username: string, password: string, token: str
     return APIErrorType.no_error;
 }
 
-export async function addReport(message: string, pic_name: string, report_type: ReportType,  follow_up: AccountType): Promise<boolean> {
+export async function addReport(message: string, pic_name: string, report_type: ReportType,  follow_up: AccountType, location?: string): Promise<boolean> {
     // Create report data
+    console.log(`Report Type: ${report_type}`);
+    
     try {
         await prisma.report.create({
             data: {
                 message: message,
                 follow_up: follow_up,
                 type: report_type,
+                location: location,
                 pic: {
                     connect: {
                         username: pic_name
@@ -136,6 +139,7 @@ export async function addReport(message: string, pic_name: string, report_type: 
         });
     }
     catch(err) {
+        console.log(`There's an error when trying to add report. Error: ${err}`);
         return false;
     }
     

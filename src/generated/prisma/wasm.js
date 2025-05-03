@@ -125,13 +125,15 @@ exports.Prisma.UserScalarFieldEnum = {
   email: 'email',
   username: 'username',
   password: 'password',
-  role: 'role'
+  role: 'role',
+  created_at: 'created_at'
 };
 
 exports.Prisma.RegistrationScalarFieldEnum = {
   id: 'id',
   email: 'email',
-  token: 'token'
+  token: 'token',
+  created_at: 'created_at'
 };
 
 exports.Prisma.ReportScalarFieldEnum = {
@@ -140,6 +142,8 @@ exports.Prisma.ReportScalarFieldEnum = {
   type: 'type',
   follow_up: 'follow_up',
   status: 'status',
+  location: 'location',
+  created_at: 'created_at',
   pic_name: 'pic_name'
 };
 
@@ -161,9 +165,15 @@ exports.Prisma.RegistrationOrderByRelevanceFieldEnum = {
   token: 'token'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
 exports.Prisma.ReportOrderByRelevanceFieldEnum = {
   id: 'id',
   message: 'message',
+  location: 'location',
   pic_name: 'pic_name'
 };
 exports.AccountType = exports.$Enums.AccountType = {
@@ -175,7 +185,8 @@ exports.AccountType = exports.$Enums.AccountType = {
 exports.ReportType = exports.$Enums.ReportType = {
   VR: 'VR',
   Safety: 'Safety',
-  SOP: 'SOP'
+  SOP: 'SOP',
+  Quality: 'Quality'
 };
 
 exports.ReportStatus = exports.$Enums.ReportStatus = {

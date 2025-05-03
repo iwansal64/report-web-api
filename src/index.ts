@@ -16,7 +16,7 @@ const fastify = Fastify();
 //? MIDDLEWARE
 fastify.addHook("onRequest", async (req, res) => {
     console.log(`Incoming IP : ${req.ip}`);
-    console.log(`Request URL : ${req.url}`);
+    console.log(`Request URL : [${req.method}] ${req.url}`);
     console.log();
     
     return;
@@ -94,9 +94,10 @@ fastify.post('/api/user/setup_signup', async (req: FastifyRequest<{ Body: { user
     };
 });
 
-fastify.post('/api/report/add', async (req: FastifyRequest<{ Body: { message: string, pic_name: string, report_type: ReportType, follow_up: AccountType } }>, res: FastifyReply) => {
+fastify.post('/api/report/add', async (req: FastifyRequest<{ Body: { message: string, pic_name: string, report_type: ReportType, follow_up: AccountType, location?: string } }>, res: FastifyReply) => {
     // Get the data
-    const { message, pic_name, report_type, follow_up } = req.body;
+    const { message, pic_name, report_type, follow_up, location } = req.body;
+    console.log(report_type);
 
     // Verify the user token
     if(!req.cookies.user_token || !verify_user_token(req.cookies.user_token)) {
@@ -104,7 +105,7 @@ fastify.post('/api/report/add', async (req: FastifyRequest<{ Body: { message: st
     }
 
     // Add the report
-    const result = await addReport(message, pic_name, report_type, follow_up);
+    const result = await addReport(message, pic_name, report_type, follow_up, location);
 
     if(result) {
         return res.code(200).send();
