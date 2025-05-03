@@ -1,24 +1,16 @@
 //? CONFIG
 import Fastify, { FastifyReply, FastifyRequest } from "fastify";
 import dotenv from "dotenv";
-import { addReport, changeReportStatus, deleteReport, getReport, prisma, setupSignup, updateReport, userLogin, userSignup, verifySignup } from "./database";
+import { addReport, changeReportStatus, deleteReport, getPICData, getReport, prisma, setupSignup, updateReport, userLogin, userSignup, verifySignup } from "./database";
 import fastifyCookie from "@fastify/cookie";
 import fastifyRateLimit from "@fastify/rate-limit";
+import fastifyCors from "@fastify/cors";
 import { APIErrorType, generate_user_token, verify_teacher, verify_user_token } from "./utilities";
 import { AccountType, Report, ReportStatus, ReportType } from "./generated/prisma";
 
-dotenv.configDotenv();
+dotenv.config();
 const fastify = Fastify();
 
-
-
-//? PLUGIN
-fastify.register(fastifyCookie);
-fastify.register(fastifyRateLimit, {
-    max: 50,
-    timeWindow: "1 minute",
-    allowList: ["127.0.0.1"]
-});
 
 
 //? MIDDLEWARE
@@ -207,6 +199,22 @@ fastify.post('/api/user/logout', async (req: FastifyRequest, res: FastifyReply) 
     return res.code(200).send();
 });
 
+fastify.get('/api/pic/get', async (req: FastifyRequest, res: FastifyReply) => {
+    // Verify the user token
+    if(!req.cookies.user_token || !verify_user_token(req.cookies.user_token)) {
+        return res.code(401).send();
+    }
+
+    // Chang the report data
+    const result = await getPICData();
+
+    if(result) {
+        return res.code(200).send(result);
+    }
+
+    return res.code(500).send()
+});
+
 
 //? RUNNER
 const start = async () => {
@@ -214,6 +222,18 @@ const start = async () => {
     
     const port: string = process.env.API_PORT!;
     const host: string = process.env.API_HOST!;
+
+    //? PLUGIN
+    await fastify.register(fastifyCookie);
+    await fastify.register(fastifyRateLimit, {
+        max: 50,
+        timeWindow: "1 minute",
+        allowList: ["127.0.0.1"]
+    });
+    await fastify.register(fastifyCors, {
+        origin: 'http://localhost:4321',
+        credentials: true
+    });
 
     try {
         await fastify.listen({ port: Number.parseInt(port), host: host });
@@ -225,3 +245,5 @@ const start = async () => {
 };
 
 start();
+
+export default fastify;

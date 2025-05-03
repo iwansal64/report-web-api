@@ -222,3 +222,20 @@ export async function checkAccountType(user_email: string): Promise<AccountType|
     
     return user_data.role;
 }
+
+export async function getPICData(): Promise<User[]|undefined> {
+    // Get the user data
+    try {
+        const pic_data = await prisma.user.findMany({
+            where: {
+                role: "Guru"
+            }
+        });
+        return pic_data;
+    }
+    catch(err) {
+        console.error(`There's an error when trying to get PIC data. Error: ${err}`);
+        return undefined;
+    }
+    
+}

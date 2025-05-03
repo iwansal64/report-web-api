@@ -50,6 +50,7 @@ model Report {
     type      ReportType
     follow_up AccountType
     status    ReportStatus @default(Pending)
+    location  String?
 
     // Relation
     pic      User   @relation(references: [username], fields: [pic_name])
