@@ -240,6 +240,20 @@ export async function getPICData(): Promise<User[]|undefined> {
     catch(err) {
         console.error(`There's an error when trying to get PIC data. Error: ${err}`);
         return undefined;
+    }   
+}
+
+export async function getUser(user_email: string): Promise<User|undefined> {
+    // Get the user data
+    const user_data = await prisma.user.findUnique({
+        where: {
+            email: user_email
+        }
+    });
+
+    if(!user_data) {
+        return undefined;
     }
     
+    return user_data;
 }

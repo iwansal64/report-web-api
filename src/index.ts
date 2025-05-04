@@ -5,12 +5,25 @@ import { addReport, changeReportStatus, deleteReport, getPICData, getReport, pri
 import fastifyCookie from "@fastify/cookie";
 import fastifyRateLimit from "@fastify/rate-limit";
 import fastifyCors from "@fastify/cors";
-import { APIErrorType, generate_user_token, verify_teacher, verify_user_token } from "./utilities";
+import { APIErrorType, generate_user_token, get_user_data_from_token, verify_teacher, verify_user } from "./utilities";
 import { AccountType, Report, ReportStatus, ReportType } from "./generated/prisma";
 
 dotenv.config();
 const fastify = Fastify();
 
+
+//? PLUGIN
+fastify.register(fastifyCookie);
+fastify.register(fastifyRateLimit, {
+    max: 50,
+    timeWindow: "1 minute",
+    allowList: ["127.0.0.1"]
+});
+fastify.register(fastifyCors, {
+    methods: ["GET", "POST", "DELETE", "PUT"],
+    origin: 'http://localhost:4321',
+    credentials: true
+});
 
 
 //? MIDDLEWARE
@@ -100,7 +113,7 @@ fastify.post('/api/report/add', async (req: FastifyRequest<{ Body: { message: st
     console.log(report_type);
 
     // Verify the user token
-    if(!req.cookies.user_token || !verify_user_token(req.cookies.user_token)) {
+    if(!req.cookies.user_token || !verify_user(req.cookies.user_token)) {
         return res.code(401).send();
     }
 
@@ -116,7 +129,7 @@ fastify.post('/api/report/add', async (req: FastifyRequest<{ Body: { message: st
 
 fastify.get('/api/report/get', async (req: FastifyRequest, res: FastifyReply) => {
     // Verify the user token
-    if(!req.cookies.user_token || !(await verify_teacher(req.cookies.user_token))) {
+    if(!req.cookies.user_token || !(await verify_user(req.cookies.user_token))) {
         return res.code(401).send();
     }
 
@@ -202,7 +215,7 @@ fastify.post('/api/user/logout', async (req: FastifyRequest, res: FastifyReply) 
 
 fastify.get('/api/pic/get', async (req: FastifyRequest, res: FastifyReply) => {
     // Verify the user token
-    if(!req.cookies.user_token || !verify_user_token(req.cookies.user_token)) {
+    if(!req.cookies.user_token || !verify_user(req.cookies.user_token)) {
         return res.code(401).send();
     }
 
@@ -216,6 +229,18 @@ fastify.get('/api/pic/get', async (req: FastifyRequest, res: FastifyReply) => {
     return res.code(500).send()
 });
 
+fastify.post('/api/user/get', async (req: FastifyRequest, res: FastifyReply) => {
+    // Verify the user token
+    if(!req.cookies.user_token || !verify_user(req.cookies.user_token)) {
+        return res.code(401).send();
+    }
+
+    // Get user data
+    const user = await get_user_data_from_token(req.cookies.user_token);
+
+    return res.code(200).send(user);
+});
+
 
 //? RUNNER
 const start = async () => {
@@ -223,18 +248,6 @@ const start = async () => {
     
     const port: string = process.env.API_PORT!;
     const host: string = process.env.API_HOST!;
-
-    //? PLUGIN
-    await fastify.register(fastifyCookie);
-    await fastify.register(fastifyRateLimit, {
-        max: 50,
-        timeWindow: "1 minute",
-        allowList: ["127.0.0.1"]
-    });
-    await fastify.register(fastifyCors, {
-        origin: 'http://localhost:4321',
-        credentials: true
-    });
 
     try {
         await fastify.listen({ port: Number.parseInt(port), host: host });

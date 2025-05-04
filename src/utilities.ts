@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import { AccountType } from "./generated/prisma";
-import { checkAccountType } from "./database";
+import { AccountType, User } from "./generated/prisma";
+import { checkAccountType, getUser } from "./database";
 
 const alphabets: string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -22,7 +22,7 @@ export function generate_signup_token(): string {
     return return_value;
 }
 
-export async function verify_user_token(token: string): Promise<AccountType | undefined> {
+export async function verify_user(token: string): Promise<AccountType | undefined> {
     try {
         const payload = jwt.verify(token, process.env.JWT_SECRET!);
         if(typeof payload == "string" || !payload.email) {
@@ -39,7 +39,21 @@ export async function verify_user_token(token: string): Promise<AccountType | un
 }
 
 export async function verify_teacher(token: string): Promise<boolean> {
-    return (await verify_user_token(token)) == AccountType.Guru;
+    return (await verify_user(token)) == AccountType.Guru;
+}
+
+export async function get_user_data_from_token(token: string): Promise<User|undefined> {
+    try {
+        const payload = jwt.verify(token, process.env.JWT_SECRET!);
+        if(typeof payload == "string" || !payload.email) {
+            return undefined;
+        }
+        
+        return (await getUser(payload.email));
+    }
+    catch(error) {
+        return undefined;
+    }
 }
 
 export enum APIErrorType {
