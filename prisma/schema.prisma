@@ -18,8 +18,7 @@ enum AccountType {
 enum ReportType {
     VR
     Safety
-    SOP
-    Quality
+    Abnormality
 }
 
 enum ReportStatus {

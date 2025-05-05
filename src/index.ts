@@ -113,7 +113,7 @@ fastify.post('/api/report/add', async (req: FastifyRequest<{ Body: { message: st
     console.log(report_type);
 
     // Verify the user token
-    if(!req.cookies.user_token || !verify_user(req.cookies.user_token)) {
+    if(!req.cookies.user_token || !verify_teacher(req.cookies.user_token)) {
         return res.code(401).send();
     }
 
@@ -128,11 +128,6 @@ fastify.post('/api/report/add', async (req: FastifyRequest<{ Body: { message: st
 });
 
 fastify.get('/api/report/get', async (req: FastifyRequest, res: FastifyReply) => {
-    // Verify the user token
-    if(!req.cookies.user_token || !(await verify_user(req.cookies.user_token))) {
-        return res.code(401).send();
-    }
-
     // Get the report data
     const result = await getReport();
 
@@ -215,7 +210,7 @@ fastify.post('/api/user/logout', async (req: FastifyRequest, res: FastifyReply) 
 
 fastify.get('/api/pic/get', async (req: FastifyRequest, res: FastifyReply) => {
     // Verify the user token
-    if(!req.cookies.user_token || !verify_user(req.cookies.user_token)) {
+    if(!req.cookies.user_token || !verify_teacher(req.cookies.user_token)) {
         return res.code(401).send();
     }
 
